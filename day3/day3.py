@@ -1,6 +1,6 @@
 import re
 
-def mulRes():
+def challenge1():
     with open('input.txt', 'r') as f:
         data = f.readlines()
         
@@ -9,13 +9,41 @@ def mulRes():
         somaMul = 0
         
         for line in data:
-            match = re.search(rString, line)
-            if match:
-                num1 = match.group(1)
-                num2 = match.group(2)
-                print(f"Número 1: {num1}, Número 2: {num2}\n")
-                somaMul += int(num1) * int(num2)
+            matches = re.findall(rString, line)
+            for match in matches:
+                num1, num2 = map(int, match)
+                somaMul += num1 * num2
                 
-    print(f"Soma dos resultados das multiplicações: {somaMul}")
+    print(f"Resultado C1: {somaMul}\n")
+    return somaMul
         
-mulRes()
+challenge1()
+
+def challenge2():
+    with open('input.txt', 'r') as f:
+        data = f.readlines()
+        
+        rString = r"(do\(\)|don't\(\)|mul\((\d+),(\d+)\))"
+        
+        somaMul = 0
+        
+        megaString = "".join(data)
+            
+        mulOperation = True
+        
+        instructions = re.findall(rString, megaString)
+        
+        for instr in instructions:
+            if instr[0] == "don't()":
+                mulOperation = False
+            elif instr[0] == "do()":
+                mulOperation = True
+            elif instr[1] and instr[2]:
+                if mulOperation:
+                    num1, num2 = int(instr[1]), int(instr[2])
+                    somaMul += num1 * num2
+                
+    print(f"Resultado C2: {somaMul}\n")
+    return somaMul
+        
+challenge2()
