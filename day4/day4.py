@@ -49,35 +49,21 @@ challenge1()
 
 def challenge2():
 
-    def searchMASCross(grid):
-        n, m = len(grid), len(grid[0])
+    def searchMASCross(matrix):
+        rows, cols = len(matrix), len(matrix[0])
         count = 0
-        word = "MAS"
 
-        for i in range(n):
-            for j in range(m):
-                for dirX1, dirY1 in [(1, 1), (-1, -1)]:
-                    for dirX2, dirY2 in [(1, -1), (-1, 1)]:
-                        x1, y1 = i, j
-                        found1 = True
-                        for k in range(len(word)):
-                            if not validBoundRange(x1, y1, n, m) or grid[x1][y1] != word[k]:
-                                found1 = False
-                                break
-                            x1 += dirX1
-                            y1 += dirY1
+        for i in range(1, rows - 1):
+            for j in range(1, cols - 1):
+                if matrix[i][j] == 'A':
+                    d1_forward = matrix[i - 1][j - 1] == 'M' and matrix[i + 1][j + 1] == 'S'
+                    d1_backward = matrix[i - 1][j - 1] == 'S' and matrix[i + 1][j + 1] == 'M'
 
-                        x2, y2 = i, j
-                        found2 = True
-                        for k in range(len(word)):
-                            if not validBoundRange(x2, y2, n, m) or grid[x2][y2] != word[k]:
-                                found2 = False
-                                break
-                            x2 += dirX2
-                            y2 += dirY2
+                    d2_forward = matrix[i - 1][j + 1] == 'M' and matrix[i + 1][j - 1] == 'S'
+                    d2_backward = matrix[i - 1][j + 1] == 'S' and matrix[i + 1][j - 1] == 'M'
 
-                        if found1 and found2:
-                            count += 1
+                    if (d1_forward or d1_backward) and (d2_forward or d2_backward):
+                        count += 1
         return count
 
     with open("input2.txt", "r") as f:
